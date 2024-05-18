@@ -1,3 +1,6 @@
+// このファイルにはlintを実行しない
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const swc = require("@swc/core");
 const fs = require('fs')
 

@@ -43,5 +43,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm install eslint
+    - run: npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
     - run: npx eslint './**/*.{ts,js}'
