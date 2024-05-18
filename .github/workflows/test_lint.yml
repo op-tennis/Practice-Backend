@@ -43,6 +43,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: reviewdog/action-eslint ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
     - name: eslint review
       uses: reviewdog/action-eslint@v1
       with:
