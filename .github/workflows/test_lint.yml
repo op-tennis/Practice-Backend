@@ -42,14 +42,17 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v1
-    - name: reviewdog/action-eslint ${{ matrix.node-version }}
+    # - uses: actions/checkout@v1
+    # - name: reviewdog/action-eslint ${{ matrix.node-version }}
+    - uses: actions/checkout@v4
+    - name: eslint/eslint ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: eslint review
-      uses: reviewdog/action-eslint@v1
+      # uses: reviewdog/action-eslint@v1
+      uses: eslint/eslint@v9.3.0
       with:
         github_token: ${{ secrets.github_token }}
         reporter: github-pr-review
