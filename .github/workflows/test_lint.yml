@@ -1,0 +1,83 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "issue/1-create-backend" ]
+  pull_request:
+    branches: [ "issue/1-create-backend" ]
+
+jobs:
+  test:
+
+    name: test
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [21.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: swc/jest ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm i jest @swc/core @swc/jest
+    - run: npm run build --if-present
+    - run: npm test
+
+  lint:
+    name: lint
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [21.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: eslint review
+      uses: reviewdog/action-eslint@v1
+      with:
+        github_token: ${{ secrets.github_token }}
+        reporter: github-pr-review
+        eslint_flags: './**/*.{ts,js}'
+    - run: npm ci
+    - run: npm i eslint
+    - run: npm lint
+
+    #   with:
+    #     # GITHUB_TOKEN.
+    #     github_token: # default is ${{ github.token }}
+    #     # Report level for reviewdog [info,warning,error]
+    #     level: # optional, default is error
+    #     # Reporter of reviewdog command [github-check,github-pr-review].
+    # Default is github-pr-review.
+    # github-pr-review can use Markdown and add a link to rule page in reviewdog reports.
+
+    #     reporter: # optional, default is github-pr-review
+    #     # Filtering mode for the reviewdog command [added,diff_context,file,nofilter].
+    # Default is added.
+
+    #     filter_mode: # optional, default is added
+    #     # Exit code for reviewdog when errors are found [true,false]
+    # Default is `false`.
+
+    #     fail_on_error: # optional, default is false
+    #     # Additional reviewdog flags
+    #     reviewdog_flags: # optional, default is
+    #     # flags and args of eslint command. Default: '.'
+    #     eslint_flags: # optional, default is .
+    #     # The directory from which to look for and run eslint. Default '.'
+    #     workdir: # optional, default is .
+    #     # Tool name to use for reviewdog reporter
+    #     tool_name: # optional, default is eslint
+    #     # NODE_OPTIONS for running eslint
+    #     node_options: # optional, default is
