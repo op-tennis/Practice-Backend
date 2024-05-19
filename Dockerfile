@@ -5,4 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# srcディレクトリをコンテナにコピー
+COPY src ./src
+
 CMD npm run dev
