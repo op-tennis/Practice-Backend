@@ -7,5 +7,6 @@ RUN npm install
 
 # srcディレクトリをコンテナにコピー
 COPY src ./src
+COPY node_modules ./node_modules
 
 CMD npm run dev
